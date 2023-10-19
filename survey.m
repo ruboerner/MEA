@@ -31,7 +31,10 @@ classdef survey
             %SURVEY Constructor for a DC measurement
             % survey(type, total_num_box, total_num_ele, d, ...
             %        n_min, n_max, offset_ele, exclude_ele, exclude_box)
-
+            if nargin < 8
+                exclude_ele = [];
+                exclude_box = [];
+            end
             assert(ischar(type) && any(strcmpi(type, ...
                 {'wenner', 'dipole-dipole',...
                 'pol-dipole-fw', 'pol-dipole-rv'})), ...
@@ -114,10 +117,15 @@ classdef survey
                     idx_cur_N = idx_cur_A + 2 * n;
 
                     % derive the indices for electrodes A, B, M, N
-                    idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
-                    idx_pos_B = idx_pos_A + 3 * n * obj.d;
-                    idx_pos_M = idx_pos_A + n * obj.d;
-                    idx_pos_N = idx_pos_A + 2 * n * obj.d;
+                    % idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
+                    % idx_pos_B = idx_pos_A + 3 * n * obj.d;
+                    % idx_pos_M = idx_pos_A + n * obj.d;
+                    % idx_pos_N = idx_pos_A + 2 * n * obj.d;
+
+                    idx_pos_A = idx_cur_A;
+                    idx_pos_B = idx_cur_B;
+                    idx_pos_M = idx_cur_M;
+                    idx_pos_N = idx_cur_N;
 
                     % Get box and position numbers
                     [cur_A, cur_B, cur_M, cur_N, pos_A, pos_B, pos_M, pos_N] = ...
@@ -158,10 +166,16 @@ classdef survey
                     idx_cur_N = idx_cur_A + 2 + n;
 
                     % derive the indices for electrodes A, B, M, N
-                    idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
-                    idx_pos_B = idx_pos_A + obj.d;
-                    idx_pos_M = idx_pos_A + (n + 1) * obj.d;
-                    idx_pos_N = idx_pos_A + (n + 2) * obj.d;
+                    % idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
+                    % idx_pos_B = idx_pos_A + obj.d;
+                    % idx_pos_M = idx_pos_A + (n + 1) * obj.d;
+                    % idx_pos_N = idx_pos_A + (n + 2) * obj.d;
+
+                    idx_pos_A = idx_cur_A;
+                    idx_pos_B = idx_cur_B;
+                    idx_pos_M = idx_cur_M;
+                    idx_pos_N = idx_cur_N;
+
 
                     % Get box and position numbers
                     [cur_A, cur_B, cur_M, cur_N, pos_A, pos_B, pos_M, pos_N] = ...
@@ -197,10 +211,16 @@ classdef survey
                     idx_cur_N = idx_cur_A + 1 + n;
 
                     % derive the indices for electrodes A, B, M, N
-                    idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
-                    idx_pos_B = 0;
-                    idx_pos_M = idx_pos_A + n * obj.d;
-                    idx_pos_N = idx_pos_A + (n + 1) * obj.d;
+                    % idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
+                    % idx_pos_B = 0;
+                    % idx_pos_M = idx_pos_A + n * obj.d;
+                    % idx_pos_N = idx_pos_A + (n + 1) * obj.d;
+
+                    idx_pos_A = idx_cur_A;
+                    idx_pos_B = idx_cur_B;
+                    idx_pos_M = idx_cur_M;
+                    idx_pos_N = idx_cur_N;
+
 
                     % Get box and position numbers
                     [cur_A, cur_B, cur_M, cur_N, pos_A, pos_B, pos_M, pos_N] = ...
@@ -235,10 +255,16 @@ classdef survey
                     idx_cur_N = idx_cur_A - n - 1;
 
                     % derive the indices for electrodes A, B, M, N
-                    idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
-                    idx_pos_B = 0;
-                    idx_pos_M = idx_pos_A - n * obj.d;
-                    idx_pos_N = idx_pos_A - (n + 1) * obj.d;
+                    % idx_pos_A = idx_cur_A * obj.d - (obj.d - 1);
+                    % idx_pos_B = 0;
+                    % idx_pos_M = idx_pos_A - n * obj.d;
+                    % idx_pos_N = idx_pos_A - (n + 1) * obj.d;
+
+                    idx_pos_A = idx_cur_A;
+                    idx_pos_B = idx_cur_B;
+                    idx_pos_M = idx_cur_M;
+                    idx_pos_N = idx_cur_N;
+
 
                     % Get box and position numbers
                     [cur_A, cur_B, cur_M, cur_N, pos_A, pos_B, pos_M, pos_N] = ...
