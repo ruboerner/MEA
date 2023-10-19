@@ -78,6 +78,7 @@ classdef survey
             obj.exclude_box = exclude_box;
 
             x = 0:(num_ele - 1);
+            x = x * obj.d;
             z = zeros(num_ele, 1);
             obj.coords = [x(:) z(:)];
 
@@ -275,7 +276,7 @@ classdef survey
             assert(total_num_box > 0);  % total_num_box has to be greater than zero
             assert(total_num_ele > 0);  % total_num_ele has to be greater than zero
             assert(offset_ele >= 0);    % offset_ele has to be greater or equal zero
-            assert(d >= 1);
+            assert(d > 0);
 
             % Elements in exclude_ele must be greater than zero
             for exclude = 1:length(exclude_ele)
