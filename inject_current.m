@@ -1,4 +1,4 @@
-function ok = inject_current(port, cycles)
+function [ok, answer] = inject_current(port, cycles)
 % inject_current Start measurement
 %
 % port.......serial port object
@@ -20,6 +20,6 @@ if port.NumBytesAvailable > 0
 end
 
 if ~strcmp(answer, 'C')
-    warning('Injection error.');
+    % warning('Injection error.');
     ok = false;
 end
