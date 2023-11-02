@@ -23,6 +23,7 @@ classdef survey
         ABMN_BERT
         k
         num_data
+        valid
     end
 
     methods
@@ -87,7 +88,8 @@ classdef survey
 
             obj.ABMN_MEA = [];
             obj.ABMN_BERT = [];
-            obj.k = [];
+            obj.k = []; %zeros(obj.num_data, 1);
+            
 
             switch lower(obj.type)
                 case 'wenner'
@@ -103,7 +105,8 @@ classdef survey
             end
 
             obj.num_data = size(obj.ABMN_BERT, 1);
-
+            obj.rhoa = -99 * ones(obj.num_data, 1);
+            obj.valid = zeros(obj.num_data, 1);
         end
 
         function obj = wenner(obj)
@@ -373,17 +376,17 @@ classdef survey
             fprintf(fid, '%d', obj.num_data);
             fprintf(fid, '# Number of data\n');
 
-            if isempty(obj.rhoa)
+            if ~any(obj.valid)
                 fprintf(fid, '# a b m n\n');
             else
                 fprintf(fid, '# a b m n k rhoa\n');
             end
 
             for i=1:obj.num_data
-                if isempty(obj.rhoa)
+                if ~any(obj.valid)
                     fprintf(fid, '%3d %3d %3d %3d\n', obj.ABMN_BERT(i, :));
                 else
-                    fprintf(fid, '%3d %3d %3d %3d %.2f\n', [obj.ABMN_BERT(i, :) obj.k(i) obj.rhoa(i)]);
+                    fprintf(fid, '%3d %3d %3d %3d %.2f %.2f\n', [obj.ABMN_BERT(i, :) obj.k(i) obj.rhoa(i)]);
                 end
             end
 
