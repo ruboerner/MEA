@@ -14,12 +14,14 @@ while port.NumBytesAvailable == 0
     pause(0.01);
 end
 
+ok = false;
+
 if port.NumBytesAvailable > 0
     answer = readline(port);
     ok = true;
 end
 
-if ~strcmp(answer, 'C')
-    % warning('Injection error.');
-    ok = false;
-end
+% if ~strcmp(answer, 'C')
+%     % warning('Injection error.');
+%     ok = false;
+% end
