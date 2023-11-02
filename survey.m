@@ -376,14 +376,14 @@ classdef survey
             if isempty(obj.rhoa)
                 fprintf(fid, '# a b m n\n');
             else
-                fprintf(fid, '# a b m n rhoa\n');
+                fprintf(fid, '# a b m n k rhoa\n');
             end
 
             for i=1:obj.num_data
                 if isempty(obj.rhoa)
                     fprintf(fid, '%3d %3d %3d %3d\n', obj.ABMN_BERT(i, :));
                 else
-                    fprintf(fid, '%3d %3d %3d %3d %.2f\n', [obj.ABMN_BERT(i, :) obj.rhoa(i)]);
+                    fprintf(fid, '%3d %3d %3d %3d %.2f\n', [obj.ABMN_BERT(i, :) obj.k(i) obj.rhoa(i)]);
                 end
             end
 
