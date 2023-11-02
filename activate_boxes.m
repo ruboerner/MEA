@@ -7,6 +7,13 @@ function answer = activate_boxes(port, boxes)
 % port........serialport object
 % boxes.......4x1 array with logical address of electrode A, B, M, N
 %
+% The 4x1 array BOXES contains in each element the number of the individual
+% boxes that act as electrode A, B, M or N.
+%
+% On initialization, the sequence [0, A, B, M, N] is written to the serial
+% port.
+% The boxes copy their individual number followed by a byte indicating
+% whether the relais associated with A, B, M, or N is activated or not.
 
 assert(length(boxes) == 4);
 
@@ -28,29 +35,31 @@ end
 
 ok = read(port, port.NumBytesAvailable, 'uint8');
 
+% The array `ok` is an 8x1 array of uint8.
+% It contains 4 pairs of address and return value for the electrodes A, B, M,
+% and N
+% First, check that the addresses are copied correctly:
+%
 ok1 = isequal([a, b, m, n], ok(1:2:8));
 
-if b > 0
+% Next, check the return codes.
+% If A, B, M, N are `on` the four bytes return
+% 136, 72, 40 and 24, respectively
+% Expressed in binary format:
+% ABMNx000, where bit x contains 1 for `on` or 0 for `off`
+%
+% For pole-dipole configurations it is assumed that electrode B
+% is never activated in any box.
+% In that case we expect that the state of the relais for b is OFF.
+%
+if b > 0 % 4 electrodes
     ok2 = isequal([136, 72, 40, 24], ok(2:2:8));
-else
+else % 3 electrodes
     ok2 = isequal([136, 64, 40, 24], ok(2:2:8));
 end
 
-answer = ok1 && ok2;
-
-% ok = answer(1) == n && answer(2) == bitor(128, bit);
-
-% a_ok = set_and_verify(port, a, 'A', 'on');
-
-% if b > 0
-% %     b_ok = set_and_verify(port, b, 'B', 'on');
-% else
-%     b_ok = true;
-% end
-
-% m_ok = set_and_verify(port, m, 'M', 'on');
-% n_ok = set_and_verify(port, n, 'N', 'on');
-
-% ok = a_ok && b_ok && m_ok && n_ok;
+% Return true if both checks are ok.
+%
+answer = isequal(ok1, ok2);
 
 end
