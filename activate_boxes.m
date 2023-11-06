@@ -44,10 +44,7 @@ if all(boxes)
     % Expressed in binary format:
     % ABMNx000, where bit x contains 1 for `on` or 0 for `off`
     %
-    % For pole-dipole configurations it is assumed that electrode B
-    % is never activated in any box.
-    % In that case we expect that the state of the relais for b is OFF.
-    %
+    
     if b > 0 % 4 electrodes
         ok2 = isequal([136, 72, 40, 24], ok(2:2:8));
     else % 3 electrodes
@@ -55,6 +52,11 @@ if all(boxes)
     end
 
 elseif isequal(b, 0)
+    % For pole-dipole configurations it is assumed that electrode B
+    % is never activated in any box.
+    % In that case we expect that the state of the relais for b is OFF.
+    % Hence, B can be ignored.
+    %
     write(port, [0, a, m, n], 'uint8');
     while port.NumBytesAvailable < 6
         pause(0.01);
