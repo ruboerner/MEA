@@ -38,7 +38,7 @@ classdef survey
             end
             assert(ischar(type) && any(strcmpi(type, ...
                 {'wenner', 'dipole-dipole',...
-                'pol-dipole-fw', 'pol-dipole-rv'})), ...
+                'pol-dipole-fw', 'pol-dipole-rv', 'schlumberger'})), ...
                 ['DC measurement configuration ', ...
                 'not recognized.']);
             assert(total_num_ele > 0, 'Number of electrodes must be > 0.')
@@ -100,6 +100,8 @@ classdef survey
                     obj = pole_dipole_fw(obj);
                 case 'pol-dipole-rv'
                     obj = pole_dipole_rv(obj);
+                case 'schlumberger'
+                    obj = schlumberger(obj);
                 otherwise
                     warning('Array configuration not recognized.');
             end
@@ -157,6 +159,39 @@ classdef survey
             end
 
         end  %wenner
+
+        function obj = schlumberger(obj)
+            for n = obj.n_min:obj.n_max
+                idx_cur_A_max = obj.num_ele - 2 * n - 1;
+                kfactor = pi * n * (n + 1) * obj.d;
+                for idx_cur_A = 1:idx_cur_A_max
+                    idx_cur_M = idx_cur_A + n;
+                    idx_cur_N = idx_cur_A + 1 + n;
+                    idx_cur_B = idx_cur_A + 2 * n + 1;
+
+                    idx_pos_A = idx_cur_A;
+                    idx_pos_B = idx_cur_B;
+                    idx_pos_M = idx_cur_M;
+                    idx_pos_N = idx_cur_N;
+
+                    [cur_A, cur_B, cur_M, cur_N, pos_A, pos_B, pos_M, pos_N] = ...
+                        box_and_position_number(obj.box, obj.offset_ele,...
+                        idx_cur_A, idx_cur_B,...
+                        idx_cur_M, idx_cur_N,...
+                        idx_pos_A, idx_pos_B,...
+                        idx_pos_M, idx_pos_N);
+
+                    if pos_N <= obj.total_num_ele
+                        if ~ismember(pos_A, obj.exclude_ele) && ~ismember(pos_M, obj.exclude_ele) && ...
+                                ~ismember(pos_N, obj.exclude_ele) && ~ismember(pos_B, obj.exclude_ele)
+                            obj.ABMN_MEA = [obj.ABMN_MEA; [cur_A, cur_B, cur_M, cur_N]]; % for MEA
+                            obj.ABMN_BERT = [obj.ABMN_BERT; [pos_A, pos_B, pos_M, pos_N]]; % for MEA
+                            obj.k = [obj.k; kfactor];
+                        end
+                    end
+                end
+            end
+        end
 
         function obj = dipole_dipole(obj)
             for n = obj.n_min:obj.n_max
@@ -362,6 +397,14 @@ classdef survey
                     if n_max > num_ele - 3
                         % warning('n_max reduced from %d to %d', n_max, num_ele - 3);
                         n_max = num_ele - 3;
+                    end
+                
+                case 'schlumberger'
+                    assert(num_ele >= 4);
+                    m = (num_ele -2) / 2;
+                    assert(n_min <= m);
+                    if n_max > floor(m)
+                        n_max = floor(m);
                     end
             end
         end % consistency_test
