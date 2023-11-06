@@ -57,7 +57,7 @@ elseif isequal(b, 0)
     % In that case we expect that the state of the relais for b is OFF.
     % Hence, B can be ignored.
     %
-    write(port, [0, a, m, n], 'uint8');
+    write(port, [0, a, b, m, n], 'uint8');
     while port.NumBytesAvailable < 6
         pause(0.01);
     end
