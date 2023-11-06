@@ -16,6 +16,10 @@ if isfile(filename)
             res(1) = [];
         end
         val = strtrim(res);
+        [vc, status] = str2num(val);
+        if status
+            val = vc;
+        end
         R.(lower(genvarname(par))) = val;
     end
 
