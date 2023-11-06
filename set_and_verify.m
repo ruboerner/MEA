@@ -54,5 +54,5 @@ switch lower(type)
     otherwise
         error('Electrode type not recognized.')
 end
-pause(0.1);
+pause(0.01);
 end
