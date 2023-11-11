@@ -22,37 +22,40 @@ else
     bit = 0;
 end
 
+write(port, zeros(5, 1), 'uint8'); % reset boxes
+pause(0.1);
+
 switch lower(type)
     case 'a'
         write(port, [0, n, 0, 0, 0], 'uint8');
         while port.NumBytesAvailable < 2
             pause(0.01)
         end
-        answer = read(port, 2, 'uint8');
+        answer = read(port, 2, 'uint8')
         ok = answer(1) == n && answer(2) == bitor(128, bit);
     case 'b'
         write(port, [0, 0, n, 0, 0], 'uint8');
         while port.NumBytesAvailable < 2
             pause(0.01)
         end
-        answer = read(port, 2, 'uint8');
+        answer = read(port, 2, 'uint8')
         ok = answer(1) == n && answer(2) == bitor(64, bit);
     case 'm'
         write(port, [0, 0, 0, n, 0], 'uint8');
         while port.NumBytesAvailable < 2
             pause(0.01)
         end
-        answer = read(port, 2, 'uint8');
+        answer = read(port, 2, 'uint8')
         ok = answer(1) == n && answer(2) == bitor(32, bit);
     case 'n'
         write(port, [0, 0, 0, 0, n], 'uint8');
         while port.NumBytesAvailable < 2
             pause(0.01)
         end
-        answer = read(port, 2, 'uint8');
+        answer = read(port, 2, 'uint8')
         ok = answer(1) == n && answer(2) == bitor(16, bit);
     otherwise
         error('Electrode type not recognized.')
 end
-pause(0.01);
+pause(0.2);
 end
