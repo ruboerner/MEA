@@ -46,8 +46,10 @@ classdef survey
 
             box = 1:total_num_box;
             num_box_exclude = length(exclude_box);
-            var = floor(((d * total_num_box) - total_num_ele) / d);
-            first = num_box_exclude + total_num_box - var + 1;
+            % var = floor(((d * total_num_box) - total_num_ele) / d);
+            var = total_num_box - total_num_ele;
+            % first = num_box_exclude + total_num_box - var + 1;
+            first = num_box_exclude + total_num_ele + 1;
             box([exclude_box, box(first:total_num_box)]) = [];
             num_ele = length(box);
 
