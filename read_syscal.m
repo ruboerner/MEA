@@ -9,7 +9,7 @@ function S = read_syscal(port)
 
 writeline(port, "R000");
 
-while port.NumBytesAvailable == 0
+while port.NumBytesAvailable < 15
     pause(0.01);
 end
 

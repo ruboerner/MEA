@@ -29,9 +29,10 @@ assert(m ~= n);
 if all(boxes)
     write(port, [0, a, b, m, n], 'uint8');
     while port.NumBytesAvailable < 8
-        pause(0.01);
+        pause(0.015);
     end
     ok = read(port, port.NumBytesAvailable, 'uint8');
+    fprintf('%d %d %d %d %d %d %d %d\n', ok)
     % The array `ok` is an 8x1 array of uint8.
     % It contains 4 pairs of address and return value for the electrodes A, B, M,
     % and N
@@ -59,7 +60,7 @@ elseif isequal(b, 0)
     %
     write(port, [0, a, b, m, n], 'uint8');
     while port.NumBytesAvailable < 6
-        pause(0.01);
+        pause(0.015);
     end
     ok = read(port, port.NumBytesAvailable, 'uint8');
     ok1 = isequal([a, m, n], ok(1:2:6));
@@ -68,6 +69,6 @@ end
 
 % Return true if both checks are ok.
 %
-answer = isequal(ok1, ok2);
+answer = (ok1 == true) && (ok2 == true); %isequal(ok1, ok2);
 
 end

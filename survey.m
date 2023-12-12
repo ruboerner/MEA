@@ -110,6 +110,8 @@ classdef survey
 
             obj.num_data = size(obj.ABMN_BERT, 1);
             obj.rhoa = -99 * ones(obj.num_data, 1);
+            obj.voltage = -99 * ones(obj.num_data, 1);
+            obj.current = -99 * ones(obj.num_data, 1);
             obj.valid = zeros(obj.num_data, 1);
         end
 
@@ -424,14 +426,15 @@ classdef survey
             if ~any(obj.valid)
                 fprintf(fid, '# a b m n\n');
             else
-                fprintf(fid, '# a b m n k rhoa\n');
+                fprintf(fid, '# a b m n k rhoa u i\n');
             end
 
             for i=1:obj.num_data
                 if ~any(obj.valid)
                     fprintf(fid, '%3d %3d %3d %3d\n', obj.ABMN_BERT(i, :));
                 else
-                    fprintf(fid, '%3d %3d %3d %3d %.2f %.2f\n', [obj.ABMN_BERT(i, :) obj.k(i) obj.rhoa(i)]);
+                    fprintf(fid, '%3d %3d %3d %3d %.2f %.2f %.2f %.2f\n', ...
+                        [obj.ABMN_BERT(i, :) obj.k(i) obj.rhoa(i) obj.voltage(i) obj.current(i)]);
                 end
             end
 
