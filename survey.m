@@ -426,15 +426,15 @@ classdef survey
             if ~any(obj.valid)
                 fprintf(fid, '# a b m n\n');
             else
-                fprintf(fid, '# a b m n k rhoa u i\n');
+                fprintf(fid, '# a b m n k rhoa u i err\n');
             end
 
             for i=1:obj.num_data
                 if ~any(obj.valid)
                     fprintf(fid, '%3d %3d %3d %3d\n', obj.ABMN_BERT(i, :));
                 else
-                    fprintf(fid, '%3d %3d %3d %3d %.2f %.2f %.2f %.2f\n', ...
-                        [obj.ABMN_BERT(i, :) obj.k(i) obj.rhoa(i) obj.voltage(i) obj.current(i)]);
+                    fprintf(fid, '%3d %3d %3d %3d %.2f %.2f %.2f %.2f %.2f\n', ...
+                        [obj.ABMN_BERT(i, :) obj.k(i) obj.rhoa(i) obj.voltage(i) obj.current(i), 3.0]);
                 end
             end
 

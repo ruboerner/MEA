@@ -14,4 +14,4 @@ ert = py.importlib.import_module('pygimli.physics.ert');
 
 mgr = ert.ERTManager('mactest.mea');
 
-mgr.invert(lam=20, verbose=1, relativeError=0.01)
+mgr.invert(lam=20)
