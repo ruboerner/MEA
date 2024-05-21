@@ -1,7 +1,7 @@
 *.asv
 *.xdmf
 .ipynb_checkpoints
-
+./_pycache_/*
 lolo.mea
 
 test_read_config.m
