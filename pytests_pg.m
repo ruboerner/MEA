@@ -1,5 +1,5 @@
 % pyversion('/Users/rub/miniconda3/envs/pg/bin/python');
-
+pyenv("ExecutionMode","OutOfProcess")
 pg = py.importlib.import_module('pygimli');
 
 %ERTManager = py.importlib.import_module('pygimli.physics.ert');
@@ -14,4 +14,6 @@ ert = py.importlib.import_module('pygimli.physics.ert');
 
 mgr = ert.ERTManager('mactest.mea');
 
-mgr.invert(lam=20)
+model = mgr.invert(lam=20);
+
+% mgr.showResult()

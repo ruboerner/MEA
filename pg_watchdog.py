@@ -1,7 +1,7 @@
 import marimo
 
 __generated_with = "0.6.0"
-app = marimo.App(layout_file="layouts/pg_watchdog.grid.json")
+app = marimo.App()
 
 
 @app.cell
@@ -28,17 +28,25 @@ def __():
 
 
 @app.cell
-def __(ERTManager, ert, pg, plt):
-    fig, ax = plt.subplots(1,1, figsize=(8,4))
-    wenner = pg.load("mactest.mea")
-    ertwenner = ERTManager()
-    wenner['err'] = ertwenner.estimateError(wenner, absoluteError=0.1, relativeError=0.03)
-    wenner['k'] = ert.geometricFactors(wenner)
-    modwenner = ertwenner.invert(wenner, lam=3, paraMaxCellSize=0.2, paraDepth=4, verbose=False)
+def __(mo):
+    refresh_button = mo.ui.refresh(default_interval='10s')
+    refresh_button
+    return refresh_button,
 
-    ertwenner.showModel(modwenner, ax=ax, cMap="RdBu_r", cMin=1, cMax=100);
+
+@app.cell
+def __(ert, plt, refresh_button):
+    print(refresh_button.value)
+
+    fig, ax = plt.subplots(1,1, figsize=(8,4))
+
+    mgr = ert.ERTManager('mactest.mea')
+    mgr.data.remove(mgr.data['rhoa'] < 0)
+
+    inv = mgr.invert(lam=2, paraDepth=5, paraMaxCellSize=0.5)
+    mgr.showModel(inv, ax=ax, cMap="RdBu_r", cMin=1, cMax=100);
     ax
-    return ax, ertwenner, fig, modwenner, wenner
+    return ax, fig, inv, mgr
 
 
 if __name__ == "__main__":
