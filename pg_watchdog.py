@@ -22,7 +22,6 @@ def __():
 
 @app.cell
 def __():
-    #from contextlib import contextmanager
     import logging, sys, os
     logging.disable(sys.maxsize)
     return logging, os, sys
@@ -40,11 +39,6 @@ def __(ERTManager, ert, pg, plt):
     ertwenner.showModel(modwenner, ax=ax, cMap="RdBu_r", cMin=1, cMax=100);
     ax
     return ax, ertwenner, fig, modwenner, wenner
-
-
-@app.cell
-def __():
-    return
 
 
 if __name__ == "__main__":
