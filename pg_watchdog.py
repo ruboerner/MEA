@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.6.4"
+__generated_with = "0.6.6"
 app = marimo.App()
 
 
@@ -34,16 +34,17 @@ def __(mo):
 
 
 @app.cell
-def __(mo):
-    fn = mo.ui.file_browser(filetypes=[".mea"], restrict_navigation=True, multiple=False)
-    fn
-    return fn,
+def __():
+    # fn = mo.ui.file_browser(filetypes=[".mea"], restrict_navigation=True, multiple=False)
+    # fn
+    return
 
 
 @app.cell
-def __(fn):
-    fn.path()
-    return
+def __():
+    # fn.path()
+    fn = 'ndw_08.mea'
+    return fn,
 
 
 @app.cell
@@ -54,29 +55,18 @@ def __(mo):
 
 
 @app.cell
-def __(ert, fn, plt):
-    # refresh_button
+def __(ert, fn, plt, refresh_button):
+    refresh_button
     fig, ax = plt.subplots(1,1, figsize=(8,4))
 
-    mgr = ert.ERTManager(fn.path())
+    mgr = ert.ERTManager(fn)
     mgr.data.estimateError()
     mgr.data.remove(mgr.data['rhoa'] < 0)
 
     inv = mgr.invert(lam=2, paraDepth=5, paraMaxCellSize=0.5)
-    mgr.showModel(inv, ax=ax, cMap="RdBu_r");
+    mgr.showModel(inv, ax=ax, cMap="RdBu_r", cMin=50, cMax=800);
     ax
     return ax, fig, inv, mgr
-
-
-@app.cell
-def __():
-    return
-
-
-@app.cell
-def __(mo):
-    mo.md(rf"# Result")
-    return
 
 
 @app.cell
