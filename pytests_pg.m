@@ -1,19 +1,40 @@
-% pyversion('/Users/rub/miniconda3/envs/pg/bin/python');
-pyenv("ExecutionMode","OutOfProcess")
-pg = py.importlib.import_module('pygimli');
+%%
+if ismac
+    pyenv( ...
+        Version="/Users/rub/miniconda3/envs/pg/bin/python", ...
+        ExecutionMode="OutOfProcess")
+elseif ispc
+    pyenv( ...
+        Version="C:\Users\rub\miniconda3\envs\pg15\python", ...
+        ExecutionMode="OutOfProcess")
+end
 
-%ERTManager = py.importlib.import_module('pygimli.physics.ert');
+
+%%
+
+
+mpl = py.importlib.import_module('matplotlib');
+% mpl.use('QtCairo');
+plt = py.importlib.import_module('matplotlib.pyplot');
+
+pg = py.importlib.import_module('pygimli');
 
 ert = py.importlib.import_module('pygimli.physics.ert');
 
-%wenner = pg.load('mactest.mea');
 
-% ertwenner = ert.ertManager;
+% mgr = ert.ERTManager('gallery.dat');
+data = ert.load('farn_sb_01.mea');
+data.estimateError();
 
-%modwenner = ertwenner.invert(wenner)
 
-mgr = ert.ERTManager('mactest.mea');
 
-model = mgr.invert(lam=20);
+mgr = ert.ERTManager(data);
 
-% mgr.showResult()
+mgr.invert(lam=20, verbose=true);
+
+%%
+mgr.showResult(); plt.show()
+% py.matplotlib.pyplot.savefig('test_plot.png');
+
+% pg.show(model); plt.show()
+
